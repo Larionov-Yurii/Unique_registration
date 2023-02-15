@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('event_links', function (Blueprint $table) {
             $table->id('id');
-            $table->string('name');
-            $table->string('phone_number');
-            $table->rememberToken();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->string('token')->unique();
             $table->timestamps();
+            $table->timestamp('expires_at')->nullable();
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('event_links');
     }
 };
